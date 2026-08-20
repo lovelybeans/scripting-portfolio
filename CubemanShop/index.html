@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Viewer</title>
+
+    <!-- Prism.js Dark Theme CSS (Tomorrow Night) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" />
+
+    <style>
+        /* Base Styling to match your portfolio */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 2rem;
+        }
+        .header-controls {
+            max-width: 900px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            text-decoration: none;
+            color: #fff;
+            background: #333;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .back-btn:hover { background: #444; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Container for each code block */
+        .snippet-box {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .snippet-box h2 {
+            margin-top: 0;
+            color: #3498db;
+            font-size: 1.5rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+        .snippet-box p {
+            color: #aaa;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Overriding Prism's default background to blend in better */
+        pre[class*="language-"] {
+            border-radius: 6px;
+            border: 1px solid #2d2d2d;
+            background: #151515 !important;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-controls">
+        <!-- Make sure to link this back to whatever you named your main portfolio file -->
+        <a href="/" class="back-btn">← Back to Portfolio</a>
+        <h1 style="margin: 0; font-size: 1.5rem;">Code Library</h1>
+    </div>
+
+    <div class="container">
+
+        <!-- ========================================== -->
+        <!-- ⬇️ COPY AND PASTE THIS BLOCK FOR NEW CODE ⬇️ -->
+        <!-- ========================================== -->
+        <div class="snippet-box">
+            <h2>Transformation</h2>
+            <p>Transforms the player. (This is a ye old script)</p>
+
+            <!-- Change 'language-lua' to python, javascript, html, etc. -->
+            <pre><code class="language-lua">
+local Players = game:GetService("Players")
+local CharacterRoots = {}
+local Chars = {}
+local AnimID = 76475539920508
+
+Players.PlayerAdded:Connect(function(plr)
+	plr.CharacterAdded:Connect(function(char)
+		if not CharacterRoots[plr.UserId] then
+			local RootPart = char:WaitForChild("HumanoidRootPart")
+			CharacterRoots[plr.UserId] = RootPart
+			Chars[plr.UserId] = char
+			Instance.new("Attachment").Parent = RootPart
+			Instance.new("Animator").Parent = char.Humanoid
+		else
+			CharacterRoots[plr.UserId] = char:WaitForChild("HumanoidRootPart")
+			Chars[plr.UserId] = char
+			Instance.new("Attachment").Parent = CharacterRoots[plr.UserId]
+			Instance.new("Animator").Parent = char.Humanoid
+		end
+	end)
+end)
+
+
+
+game.ReplicatedStorage.Controll.OnServerEvent:Connect(function(CerID, CedID)
+
+end)
+
+
+game.ReplicatedStorage.ControlShop.Event:Connect(function(CedID)
+	local Char = Chars[CedID]
+	local beam = game.Workspace.Beam:Clone()
+	local Tween = game:GetService("TweenService")
+	beam.Parent = workspace
+	print("Beam Created || "..tostring(beam.Parent))
+	beam.Attachment1 = CharacterRoots[CedID].Attachment
+	beam.Attachment0 = workspace.Shop.Lantern.Bulb.Attachment
+	print("Beam attachments attached.")
+	local Highlight = Instance.new("Highlight")
+	Highlight.Parent = Char
+	Highlight.FillColor = Color3.fromRGB(127, 127, 127)
+	Highlight.FillTransparency = 1
+	Highlight.OutlineTransparency = 1
+	Highlight.DepthMode = Enum.HighlightDepthMode.Occluded
+	print("Highlight created.")
+	Char.Animate.Enabled = false
+	Tween:Create(Highlight, TweenInfo.new(9), {FillTransparency = 0, OutlineTransparency = 0}):Play()
+	Tween:Create(Char.Head, TweenInfo.new(2.5), {Color = Color3.new(1, 1, 1)}):Play()
+	Tween:Create(Char.LeftArm, TweenInfo.new(2.5), {Color = Color3.new(1, 1, 1)}):Play()
+	Tween:Create(Char.LeftLeg, TweenInfo.new(2.5), {Color = Color3.new(1, 1, 1)}):Play()
+	Tween:Create(Char.RightLeg, TweenInfo.new(2.5), {Color = Color3.new(1, 1, 1)}):Play()
+	Tween:Create(Char.RightArm, TweenInfo.new(2.5), {Color = Color3.new(1, 1, 1)}):Play()
+	Tween:Create(Char.Tors, TweenInfo.new(2.5), {Color = Color3.new(1, 1, 1)}):Play()
+	game.ReplicatedStorage.Morphie:FireClient(Players:GetPlayerByUserId(CedID))
+	print("Tween started.")
+	Char.Humanoid.WalkSpeed = 0
+	Char.Humanoid.JumpPower = 0
+	for i,v in pairs(Char.Humanoid.Animator:GetPlayingAnimationTracks()) do
+		v:Stop()
+		print("Stopped "..tostring(v))
+	end
+	local plr = Players:GetPlayerByUserId(CedID)
+	game.	ReplicatedStorage.BLEACH:FireClient(plr)
+	print("Bleach launched to "..plr.Name)
+	wait(10)
+	for i,v in pairs(Char.Humanoid:GetPlayingAnimationTracks()) do
+		v:Stop()
+	end
+	game.ReplicatedStorage.ControlToggle:FireClient(Players:GetPlayerByUserId(CedID))
+	beam:Destroy()
+	Highlight:Destroy()
+	game.ReplicatedStorage.Morph:Fire(Players:GetPlayerByUserId(CedID))
+	task.wait(0.05)
+	local Plr = Players:GetPlayerByUserId(CedID)
+	local newchar = Plr.Character
+	local newHighl = newchar.Highlight
+	newHighl.Enabled = true
+	task.wait(2)
+	Tween:Create(newHighl, TweenInfo.new(5), {FillTransparency = 1, OutlineTransparency = 1}):Play()
+	newchar.Humanoid.WalkSpeed = 0
+	newchar.Humanoid.JumpPower = 0
+	print("TIME RECORDING2: TWEEN")
+	task.wait(5)
+	newchar.Humanoid.WalkSpeed = 16
+	newchar.Humanoid.JumpPower = 50
+end)
+            </code></pre>
+
+        </div>
+
+        <div class="snippet-box">
+            <h2>Shop Animation</h2>
+            <p>The shop animation that makes it appear.</p>
+
+            <pre><code class="language-lua">
+local ShopPos = Vector3.new(1.45, 0.209, 21.275)
+local ShopkeeperPos = Vector3.new(1.594, 3.856, 19.304)
+local ID = 131058991473907
+local Tween = game:GetService("TweenService")
+local TweenAnimShop = (function()
+	local cf = Instance.new("CFrameValue")
+	cf.Name = "ShopTweenCF"
+	cf.Value = workspace.Shop:GetPrimaryPartCFrame()
+	cf.Parent = script -- prevent garbage collection
+	cf.Changed:Connect(function(v)
+		workspace.Shop:SetPrimaryPartCFrame(v)
+	end)
+	return Tween:Create(cf, TweenInfo.new(3), {Value = CFrame.new(ShopPos)})
+end)()
+
+local TweenAnimKeeper = (function()
+	local cf = Instance.new("CFrameValue")
+	cf.Name = "KeeperTweenCF"
+	cf.Value = workspace.Shopkeeper:GetPrimaryPartCFrame()
+	cf.Parent = script -- prevent garbage collection
+	cf.Changed:Connect(function(v)
+		workspace.Shopkeeper:SetPrimaryPartCFrame(v)
+	end)
+	return Tween:Create(cf, TweenInfo.new(3), {Value = CFrame.new(ShopkeeperPos)})
+end)()
+
+
+
+
+
+
+
+
+script.Parent.Triggered:Connect(function()
+	script.Parent.Enabled = false
+	script.Parent.Parent.Humanoid.Animator:LoadAnimation(script.Animation):Play()
+	task.wait(1.16)
+	TweenAnimShop:Play()
+	TweenAnimKeeper:Play()
+	task.wait(2.75)
+	workspace.AnimKeeper:Destroy()
+	for i, v in pairs(workspace.Shopkeeper:GetChildren()) do
+		if v:IsA("BasePart") then
+			v.Transparency = 0
+			if v.Name == "Head" then
+				v.face.Transparency = 0
+			end
+		end
+	end
+	workspace.Shopkeeper.ProximityPrompt.Enabled = true
+end)
+            </code></pre>
+
+        </div>
+
+    </div>
+
+    <!-- Prism.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
+    <!-- Prism Autoloader: Automatically fetches language syntax files (like lua, python) as needed -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <!-- Prism Toolbar & Copy to Clipboard Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+</body>
+</html>
