@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keycard Door</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/726/726056.png">
+
+    <!-- Prism.js Dark Theme CSS (Tomorrow Night) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" />
+
+    <style>
+        /* Base Styling to match your portfolio */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 2rem;
+        }
+        .header-controls {
+            max-width: 900px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            text-decoration: none;
+            color: #fff;
+            background: #333;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .back-btn:hover { background: #444; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Container for each code block */
+        .snippet-box {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .snippet-box h2 {
+            margin-top: 0;
+            color: #3498db;
+            font-size: 1.5rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+        .snippet-box p {
+            color: #aaa;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Overriding Prism's default background to blend in better */
+        pre[class*="language-"] {
+            border-radius: 6px;
+            border: 1px solid #2d2d2d;
+            background: #151515 !important;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-controls">
+        <!-- Make sure to link this back to whatever you named your main portfolio file -->
+        <a href="/scripting-portfolio/" class="back-btn">← Back to Portfolio</a>
+        <h1 style="margin: 0; font-size: 1.5rem;">Code Library</h1>
+    </div>
+
+    <div class="container">
+
+        <!-- ========================================== -->
+        <!-- ⬇️ COPY AND PASTE THIS BLOCK FOR NEW CODE ⬇️ -->
+        <!-- ========================================== -->
+        <div class="snippet-box">
+            <h2>Main Script</h2>
+            <p>This is the client side script.</p>
+
+            <pre><code class="language-lua">
+local plr = game.Players.LocalPlayer
+
+
+
+game.ReplicatedStorage.Testing.OnClientEvent:Connect(function()
+	game.TextChatService:DisplayBubble(game.Workspace.PureButterfly.Head, "Testing")
+end)
+
+
+
+
+
+local function Visibility(Char1:Model, Char2:Model)
+	for i, v in pairs(Char1:GetChildren()) do
+		if v:IsA("BasePart") and (v.Name ~= "Part" and v.Name ~= "Spread" and v.Name ~= "HumanoidRootPart") then
+--			print(v.Name)
+			v.Transparency = 0.4
+		elseif v:IsA("BasePart") and v.Name == "Part" then
+			v:WaitForChild("Decal").Transparency = 0
+		end
+	end
+
+	for i, v in pairs(Char2:GetChildren()) do
+		if v:IsA("BasePart") and (v.Name ~= "Part" and v.Name ~= "Spread" and v.Name ~= "HumanoidRootPart") then
+			v.Transparency = 1
+
+		elseif v:IsA("BasePart") and v.Name == "Part" then
+			v:WaitForChild("Decal").Transparency = 1
+		end
+	end
+end
+
+
+
+
+
+game.ReplicatedStorage.OtherRealm.OnClientEvent:Connect(function(Cframe1:CFrame, Cframe2:CFrame, Cframe3:CFrame, Cframe4:CFrame, plr1:Player, plr2:Player)
+	game.StarterGui:SetCore("ResetButtonCallback", false)
+	game.Workspace.Camera	.CameraType = Enum.CameraType.Scriptable
+	game.Workspace.Camera.CFrame = Cframe1
+	Visibility(game.Workspace.ButterflyCutOne, workspace.ButterflyCutThree)
+	plr.Character:WaitForChild("Humanoid").WalkSpeed = 0
+	plr.Character:WaitForChild("Humanoid").JumpPower = 0
+	game.TextChatService:DisplayBubble(game.Workspace.ButterflyCutOne.Head, "Hello, " ..plr1.DisplayName.. ". Forgive my Sillix, they tend run off a lot.")
+	task.wait(5)
+	local Felling = math.random(1, 4)
+	game.TextChatService:DisplayBubble(game.Workspace.ButterflyCutOne.Head, "It must have sensed a feeling of " ..if Felling == 1 then "doubt." elseif Felling == 2 then "anger." elseif Felling == 3 then "dissapointment." else "sadness.")
+	task.wait(4)
+	workspace.ButterflyCutOne:PivotTo(workspace.ButterflyCutOne.CFramePos.Value - Vector3.new(0, 20, 0))
+	game.Workspace.Camera.CFrame = Cframe2
+	Visibility(game.Workspace.ButterflyCutTwo, workspace.ButterflyCutOne)
+	game.TextChatService:DisplayBubble(game.Workspace.ButterflyCutTwo.Head, if Felling == 1 then "People are saying you cant make it in the world?" elseif Felling == 2 then "Like people dont respect you?" elseif Felling == 3 then "People saying your not good enough?" else "Like people dont listen to you?")
+	task.wait(4)
+	game.TextChatService:DisplayBubble(game.Workspace.ButterflyCutTwo.Head, "Do you want to silence these people?")
+	task.wait(3)
+	workspace.ButterflyCutTwo:PivotTo(workspace.ButterflyCutTwo.CFramePos.Value - Vector3.new(0, 20, 0))
+	game.Workspace.Camera.CFrame = Cframe3
+	Visibility(game.Workspace.ButterflyCutThree, workspace.ButterflyCutTwo)
+	game.TextChatService:DisplayBubble(game.Workspace.ButterflyCutThree.Head, "I can give you this power.")
+	task.wait(2.5)
+	game.TextChatService:DisplayBubble(game.Workspace.ButterflyCutThree.Head, "Only if you agree of course.")
+	task.wait(2)
+	game.Workspace.Camera.CFrame = Cframe4
+	game.TextChatService:DisplayBubble(game.Workspace.Rig.Head, "Let me silence them.")
+	task.wait(1.8)
+	game.Workspace.Camera.CFrame = Cframe3
+	game.TextChatService:DisplayBubble(game.Workspace.ButterflyCutThree.Head, "And what should I call you?")
+	task.wait(3.5)
+	game.Workspace.Camera.CFrame = Cframe4
+	game.TextChatService:DisplayBubble(game.Workspace.Rig.Head, "*superduper evil name*")
+	task.wait(3)
+	game.Workspace.Camera.CameraType = Enum.CameraType.Track
+	plr.Character:WaitForChild("Humanoid").WalkSpeed = 16
+	plr.Character:WaitForChild("Humanoid").JumpPower = 50
+	game.ReplicatedStorage.OtherRealm:FireServer(plr)
+	game.StarterGui:SetCore("ResetButtonCallback", true)
+	workspace.ButterflyCutOne:PivotTo(workspace.ButterflyCutOne.CFramePos.Value)
+	workspace.ButterflyCutTwo:PivotTo(workspace.ButterflyCutTwo.CFramePos.Value)
+end)
+            </code> </pre>
+
+        </div>
+
+        <div class="snippet-box">
+            <h2>Server Side</h2>
+            <p>This is the server side version of the script.</p>
+
+            <pre><code class="language-lua">
+game.Players.PlayerAdded:Connect(function(plr)
+	plr.CharacterAdded:Connect(function()
+		plr.Chatted:Connect(function(msg)
+			if admins[plr.UserId] and string.find(string.lower(msg), "/e testing") then
+				local Plr1Name, Plr2Name = string.match(msg, "/e testing%s+(%S+)%s+(%S+)")
+				local plr1 = game.Players:FindFirstChild(Plr1Name)
+				local plr2 = game.Players:FindFirstChild(Plr2Name)
+				if plr1 and plr2 and plr1.Availible.Value == true and plr2.Availible.Value == true then
+					game.ReplicatedStorage.OtherRealm:FireClient(plr1, game.ServerStorage.Camera1.Value, game.ServerStorage.Camera2.Value, game.ReplicatedStorage.Camera3.Value, game.ServerStorage.Camera4.Value, plr1, plr2)
+					game.ReplicatedStorage.OtherRealm:FireClient(plr2, game.ServerStorage.Camera1.Value, game.ServerStorage.Camera2.Value, game.ReplicatedStorage.Camera3.Value, game.ServerStorage.Camera4.Value, plr1, plr2)
+					plr1:WaitForChild("Availible").Value = false
+					plr2:WaitForChild("Availible").Value = false
+					game.Workspace.Rig.Humanoid:ApplyDescription(plr1.Character.Humanoid.HumanoidDescription, Enum.AssetTypeVerification.Always)
+
+				elseif plr1.Availible.Value == false or plr2.Availible.Value == false then
+					print("One or more players are un-availible at this time.")
+
+				end
+			end
+		end)
+	end)
+
+	local LeValue = Instance.new("BoolValue")
+	LeValue.Name = "Availible"
+	LeValue.Value = true
+	LeValue.Parent = plr
+end)
+            </code> </pre>
+
+        </div>
+
+    </div>
+
+    <!-- Prism.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
+    <!-- Prism Autoloader: Automatically fetches language syntax files (like lua, python) as needed -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <!-- Prism Toolbar & Copy to Clipboard Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+</body>
+</html>
