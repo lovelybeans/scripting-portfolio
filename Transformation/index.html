@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgive my intrusion</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/726/726056.png">
+
+    <!-- Prism.js Dark Theme CSS (Tomorrow Night) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" />
+
+    <style>
+        /* Base Styling to match your portfolio */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 2rem;
+        }
+        .header-controls {
+            max-width: 900px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            text-decoration: none;
+            color: #fff;
+            background: #333;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .back-btn:hover { background: #444; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Container for each code block */
+        .snippet-box {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .snippet-box h2 {
+            margin-top: 0;
+            color: #3498db;
+            font-size: 1.5rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+        .snippet-box p {
+            color: #aaa;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Overriding Prism's default background to blend in better */
+        pre[class*="language-"] {
+            border-radius: 6px;
+            border: 1px solid #2d2d2d;
+            background: #151515 !important;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-controls">
+        <!-- Make sure to link this back to whatever you named your main portfolio file -->
+        <a href="/scripting-portfolio/" class="back-btn">← Back to Portfolio</a>
+        <h1 style="margin: 0; font-size: 1.5rem;">Code Library</h1>
+    </div>
+
+    <div class="container">
+
+        <!-- ========================================== -->
+        <!-- ⬇️ COPY AND PASTE THIS BLOCK FOR NEW CODE ⬇️ -->
+        <!-- ========================================== -->
+        <div class="snippet-box">
+            <h2>Function</h2>
+            <p>This is the function that handles transformation.</p>
+
+            <pre><code class="language-lua">
+function Transform(plr: Player): ()
+	local mirac = plr:GetAttribute(`Miraculous`)
+
+	if mirac > max_mir or mirac <= 0 then return end
+	if plr:GetAttribute(`busy`) then return end
+
+	local char = plr.Character
+	local hum: Humanoid = char.Humanoid
+	local animator: Animator = hum.Animator
+
+	if not plr:GetAttribute(`Transformed`) then
+		if not plr or typeof(plr) ~= `Instance` or not plr:IsA(`Player`) then warn(`Player argument is not a player type.`); return false end
+
+		plr:SetAttribute(`busy`, true)
+
+		hum.WalkSpeed = 0
+
+		local anim = animator:LoadAnimation(script.ButterflyTransform)
+		local anims = anim:Play()
+
+		anim:GetMarkerReachedSignal(`Pants`):Connect(function(name)
+			if clothes[mirac] ~= nil then
+				local cloth = clothes[mirac]
+
+				char.Pants.PantsTemplate = `rbxassetid://{cloth.Pants.Value}`
+			end
+		end)
+
+		anim:GetMarkerReachedSignal(`Shirt`):Connect(function(name)
+			if clothes[mirac] ~= nil then
+				local cloth = clothes[mirac]
+
+				char.Shirt.ShirtTemplate = `rbxassetid://{cloth.Shirt.Value}`
+			end
+		end)
+
+		anim.Stopped:Wait()
+
+		hum.WalkSpeed = 40
+		hum.JumpHeight = 15
+
+		plr:SetAttribute(`busy`, false)
+		plr:SetAttribute(`Transformed`, true)
+
+	elseif plr:GetAttribute(`Transformed`) then
+		plr:SetAttribute(`Transformed`, false)
+
+		workspace.Rig.Humanoid:ApplyDescriptionResetAsync(workspace.Rig.Humanoid:GetAppliedDescription())
+		workspace.Rig.Humanoid:ApplyDescriptionAsync(game.Players:GetHumanoidDescriptionFromUserIdAsync(plr.UserId))
+		local a = workspace.Rig.Humanoid:GetAppliedDescription()
+
+		char.Shirt.ShirtTemplate = workspace.Rig.Shirt.ShirtTemplate
+		char.Pants.PantsTemplate = workspace.Rig.Pants.PantsTemplate
+
+		hum.WalkSpeed = 16
+		hum.JumpHeight = 7.2
+	end
+end
+            </code></pre>
+
+        </div>
+
+    </div>
+
+    <!-- Prism.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
+    <!-- Prism Autoloader: Automatically fetches language syntax files (like lua, python) as needed -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <!-- Prism Toolbar & Copy to Clipboard Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+</body>
+</html>
